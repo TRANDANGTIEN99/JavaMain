@@ -7,6 +7,7 @@ public class Q4 {
         int dust = 50;
         System.out.println(rateDust(dust));
         System.out.println(String.format("오늘의 먼지 상태는 %s", rateDust(dust)));
+
     }
     public static String rateDust(int dust){
         if (dust <= 30){
