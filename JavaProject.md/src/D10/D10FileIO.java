@@ -1,31 +1,90 @@
 package D10;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-/*public class D10FileIO {
-    public static void main(String[] args) {
+public class D10FileIO {
+    public static void main(String[] args) throws IOException {
 //        fileReader();
-        bufferedReader();
-    }*/
-   /* p    public static void bufferedWriter(List<Person> people) {
+        List<Person> people = bufferedReader();
+        System.out.println("Current People:");
+        for (Person person : people) {
+            System.out.println(person);
+        }
+        /*people = people.stream()
+                .sorted((o1, o2) -> o1.getName().compareTo(o2.getName()))
+                .toList();*/
+        // 사용자한테 입력을 받아 사람을 추가해보자.
+//        Scanner scanner = new Scanner(System.in);
+        // BufferedReader로 사용자 입력 받기
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            // 이름 입력하기
+            System.out.print("name: ");
+//            String name = scanner.nextLine();
+            String name = reader.readLine();
+            // 이메일 입력하기
+            System.out.print("email: ");
+//            String email = scanner.nextLine();
+            String email = reader.readLine();
+            // 나이 입력하기
+            System.out.print("age: ");
+//            int age = Integer.parseInt(scanner.nextLine());
+            int age = Integer.parseInt(reader.readLine());
+            // 성별 입력하기
+            System.out.print("gender: ");
+//            String gender = scanner.nextLine();
+            String gender = reader.readLine();
+
+            // 사용자가 입력한 정보를 바탕으로 새로운 사람을 만들자.
+            Person person = new Person(
+                    name, email, age, gender
+            );
+            // 사람을 리스트에 추가해주자.
+            people.add(person);
+            // 저장 메시지
+            System.out.println("Saved!!!");
+            // 사용자가 추가로 있는지 묻고,
+            System.out.print("add more? [y/n]: ");
+//            String hasNext = scanner.nextLine();
+            String hasNext = reader.readLine();
+            // 없으면
+            if (hasNext.equals("n")) {
+                // 종료
+                break;
+            }
+        }
+        bufferedWriter(people);
+    }
+
+    public static void bufferedWriter(List<Person> people) {
         // BufferedWriter: 버퍼링을 통해 출력을 효율적으로
-        try (FileWriter fileWriter = new FileWriter("output.txt");
+        //      그냥 사용할 경우 파일을 완전히 덮어쓴다.
+        //      그래서 최종적인 파일의 상태를 출력하는게 편하다.
+        // 만약, 이전 데이터에 이어서 데이터를 작성하고 싶다면,
+        // FileWriter의 생성자에 true 추가
+        try (FileWriter fileWriter = new FileWriter("people.csv");
              BufferedWriter writer = new BufferedWriter(fileWriter)) {
-            // write: 주어진 인자를 출력한다.
+            for (Person person : people) {
+                /*writer.write(person.toString());
+                writer.newLine();*/
+                StringBuilder lineBuilder = new StringBuilder();
+                lineBuilder.append(person.getName()).append(',');
+                lineBuilder.append(person.getEmail()).append(',');
+                lineBuilder.append(person.getAge()).append(',');
+                lineBuilder.append(person.getGender());
+                String line = lineBuilder.toString();
+                writer.write(line);
+                // BufferedWriter의 newLine()은 OS별 개행문자의 차이를 없에준다.
+                writer.newLine();
+            }
+
+            /*// write: 주어진 인자를 출력한다.
             writer.write("Hello FileIO!!!!!!!!");
             // newLine: 개행문자를 출력한다.
-            writer.newLine();
-            writer.write("BufferedWriter is easy to use and fast");
-            writer.newLine();
-//            writer.write("asdf");
-//            writer.newLine();
-            writer.write("something weird?");
-            writer.newLine();
+            writer.newLine();*/
         } catch (IOException e) {
             // 파일 열기 실패...
             System.out.println("데이터 작성을 위한 파일을 열지 못했습니다...");
@@ -137,4 +196,4 @@ import java.util.List;
             }
         }
     }
-}*/
+}
